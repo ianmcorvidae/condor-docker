@@ -2,7 +2,7 @@ import htcondor
 import os
 
 collector_url = os.environ['COLLECTOR_URL']
-schedd_name = os.environ['SCHEDD_NAME']
+schedd_name = os.environ.get('SCHEDD_NAME', None)
 
 coll = htcondor.Collector(collector_url)
 
@@ -11,7 +11,11 @@ print "Slots available:"
 for slot in coll.query(htcondor.AdTypes.Startd, "true", ["Name", "State"]):
     print slot["Name"], slot["State"]
 
-scheddAd = coll.locate(htcondor.DaemonTypes.Schedd, schedd_name)
+scheddAd = None
+if schedd_name:
+    scheddAd = coll.locate(htcondor.DaemonTypes.Schedd, schedd_name)
+else:
+    scheddAd = coll.locate(htcondor.DaemonTypes.Schedd)
 schedd = htcondor.Schedd(scheddAd)
 
 print "Jobs:"

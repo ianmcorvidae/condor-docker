@@ -8,3 +8,8 @@ RUN yum install -y \
     condor \
     condor-python \
     && yum -y clean all
+
+ADD https://github.com/Yelp/dumb-init/releases/download/v1.0.1/dumb-init_1.0.1_amd64 /bin/dumb-init
+RUN chmod +x /bin/dumb-init
+
+RUN mkdir /run/lock
